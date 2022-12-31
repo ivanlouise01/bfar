@@ -33,6 +33,15 @@
           color: #67668A !important;
         }
         table.dataTable thead th, table.dataTable thead td {text-align: center;}
+        th {
+          border-top: 1px solid #dddddd;
+          border-bottom: 1px solid #dddddd;
+          border-right: 1px solid #dddddd;
+        }
+        
+        th:first-child {
+          border-left: 1px solid #dddddd;
+        }
         
     </style>
 </head>
