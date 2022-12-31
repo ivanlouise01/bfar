@@ -11,6 +11,7 @@
 
         *{font-family: 'Barlow', sans-serif !important;}
         .btn-primary{ background: #67668A;}
+        .btn-primary:hover{ background: #424158;}
         input {text-align:center; }
         .form-control, .btn {border-radius: 0px;font-size: 14px; border-left: 0px; border-right: 0px}
         .btn{ padding: 15px 0px 15px 0px;}
