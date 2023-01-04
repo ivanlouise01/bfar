@@ -9,7 +9,6 @@
     </a>
     
 
-    <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li>
         <a href="#" class="nav-link">

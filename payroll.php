@@ -6,8 +6,8 @@
     <title>BFAR</title>
     <script src="https://kit.fontawesome.com/bca5dff172.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.2.0/css/dataTables.dateTime.min.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
     <style>
@@ -105,9 +105,17 @@
 
 
 
-        <div class="d-flex flex-fill overflow-auto" style="padding-top: 25px !important; width: 100%;"> 
-        
-        <table id="example" class="table table-striped cell-border" style="width:80vw">
+        <div class="d-flex flex-column flex-fill overflow-auto" style="padding-top: 25px !important; width: 100%;"> 
+        <div class="d-flex flex-row justify-content-end" style="margin-bottom: 15px;">
+            
+            <p style="margin-right: 15px;">From date:</p>
+            <input type="text" id="min" name="min" style="margin-right: 15px;">
+            <p style="margin-right: 15px;">To date:</p>
+            <input type="text" id="max" name="max" style="margin-right: 15px;">
+
+        </div>
+            
+        <table id="example" class="display table table-striped cell-border" style="width:80vw">
         <thead>
             <tr>
                 <th rowspan="2">Employee</th>
@@ -120,6 +128,7 @@
                 <th colspan="3">Contributions</th>
                 <th rowspan="2">Net Amount Due</th>
                 <th rowspan="2">Signature of Recipient</th>
+                <th rowspan="2">Date</th>
             </tr>
             <tr>
                 
@@ -155,6 +164,7 @@
                 <td></td>
                 <td>7762</td>
                 <td></td>
+                <td>2011-04-25</td>
             </tr>
             ";
             $x++;
@@ -180,6 +190,7 @@
                 <td></td>
                 <td>7762</td>
                 <td></td>
+                <td>2012-03-29</td>
             </tr>
             ";
             $x++;
@@ -205,6 +216,7 @@
                 <td></td>
                 <td>7762</td>
                 <td></td>
+                <td>2010-10-14</td>
             </tr>
             ";
             $x++;
@@ -231,16 +243,48 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.2.0/js/dataTables.dateTime.min.js"></script>
     <script>
-    $(document).ready(function () {
-    $('#example').DataTable({
-      "bAutoWidth": false,
-      "columnDefs": [
-        {"className": "dt-center", "targets": "_all"}],
-    });
-    });
+  var minDate, maxDate;
+ 
+ // Custom filtering function which will search data in column four between two values
+ $.fn.dataTable.ext.search.push(
+     function( settings, data, dataIndex ) {
+         var min = minDate.val();
+         var max = maxDate.val();
+         var date = new Date( data[14] );
+  
+         if (
+             ( min === null && max === null ) ||
+             ( min === null && date <= max ) ||
+             ( min <= date   && max === null ) ||
+             ( min <= date   && date <= max )
+         ) {
+             return true;
+         }
+         return false;
+     }
+ );
+  
+ $(document).ready(function() {
+     // Create date inputs
+     minDate = new DateTime($('#min'), {
+         format: 'MMMM Do YYYY'
+     });
+     maxDate = new DateTime($('#max'), {
+         format: 'MMMM Do YYYY'
+     });
+  
+     // DataTables initialisation
+     var table = $('#example').DataTable();
+  
+     // Refilter the table
+     $('#min, #max').on('change', function () {
+         table.draw();
+     });
+ });
+    
     </script>
     
   </body>
